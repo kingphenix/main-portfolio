@@ -1,26 +1,40 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import profileImg from "@/assets/profile.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const skills = [
-  { name: "HTML", icon: "🌐" },
-  { name: "CSS", icon: "🎨" },
-  { name: "JavaScript", icon: "⚡" },
-  { name: "React", icon: "⚛️" },
-  { name: "TypeScript", icon: "📘" },
-  { name: "Framer Motion", icon: "🎬" },
-  { name: "Tailwind", icon: "🎯" },
-  { name: "GSAP", icon: "🚀" },
+  { name: "HTML", icon: <img src="/icons/html-5-svgrepo-com.svg" alt="HTML" className="w-8 h-8" /> },
+  { name: "CSS", icon: <img src="/icons/css-3-svgrepo-com.svg" alt="CSS" className="w-8 h-8" /> },
+  { name: "JavaScript", icon: <img src="/icons/js-svgrepo-com.svg" alt="JavaScript" className="w-8 h-8" /> },
+  { name: "React", icon: <img src="/icons/react-svgrepo-com.svg" alt="React" className="w-8 h-8" /> },
+  { name: "TypeScript", icon: <img src="/icons/js-svgrepo-com.svg" alt="TypeScript" className="w-8 h-8" /> },
+  { name: "Framer Motion", icon: <img src="/icons/framer-svgrepo-com.svg" alt="Framer Motion" className="w-8 h-8" /> },
+  { name: "Tailwind", icon: <img src="/icons/tailwind-svgrepo-com.svg" alt="Tailwind" className="w-8 h-8" /> },
+  { name: "GSAP", icon: <img src="/icons/framer-svgrepo-com.svg" alt="GSAP" className="w-8 h-8" /> },
+  { name: "Angular", icon: <img src="/icons/angular-svgrepo-com.svg" alt="Angular" className="w-8 h-8" /> },
+  { name: "Vue", icon: <img src="/icons/vue-svgrepo-com.svg" alt="Vue" className="w-8 h-8" /> },
+  { name: "Git", icon: <img src="/icons/git-svgrepo-com.svg" alt="Git" className="w-8 h-8" /> },
+  { name: "Node.js", icon: <img src="/icons/node-js-svgrepo-com.svg" alt="Node.js" className="w-8 h-8" /> },
+  { name: "NPM", icon: <img src="/icons/npm-svgrepo-com.svg" alt="NPM" className="w-8 h-8" /> },
 ];
 
 const About = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const iconsRef = useRef<HTMLDivElement>(null);
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+      direction: "ltr",
+      duration: 20,
+    },
+    [Autoplay({ delay: 2000, stopOnInteraction: false })]
+  );
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -62,21 +76,19 @@ const About = () => {
         }
       );
 
+      // Animate carousel entry
       gsap.fromTo(
-        iconsRef.current?.children || [],
+        emblaRef.current,
         {
           opacity: 0,
-          scale: 0.5,
           y: 30,
         },
         {
           opacity: 1,
-          scale: 1,
           y: 0,
-          duration: 0.6,
-          stagger: 0.1,
+          duration: 0.8,
           scrollTrigger: {
-            trigger: iconsRef.current,
+            trigger: emblaRef.current,
             start: "top 80%",
           },
         }
@@ -84,7 +96,7 @@ const About = () => {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [emblaRef]);
 
   return (
     <section
@@ -97,9 +109,9 @@ const About = () => {
       <div className="absolute top-20 right-20 w-72 h-72 bg-accent/10 rounded-full blur-3xl" />
 
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="flex flex-col md:flex-row items-start gap-12">
           {/* Profile Image */}
-          <div ref={imageRef} className="flex justify-center">
+          <div ref={imageRef} className="flex-shrink-0">
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity" />
               <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-primary/30 group-hover:border-primary/60 transition-all group-hover:scale-105 duration-500">
@@ -113,37 +125,40 @@ const About = () => {
           </div>
 
           {/* Content */}
-          <div ref={contentRef} className="space-y-6">
+          <div ref={contentRef} className="flex-1 space-y-6 max-w-2xl">
             <h2 className="text-4xl md:text-5xl font-bold glow-text">
               About Me
             </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-lg text-muted-foreground leading-relaxed break-words">
               I'm a passionate frontend developer who transforms ideas into
               stunning digital realities. With a keen eye for design and a deep
               understanding of modern web technologies, I create immersive
               experiences that captivate users and drive results.
             </p>
-            <p className="text-lg text-muted-foreground leading-relaxed">
+            <p className="text-lg text-muted-foreground leading-relaxed break-words">
               My expertise spans across cutting-edge frameworks and animation
               libraries, allowing me to build interfaces that are not just
               functional, but truly memorable.
             </p>
 
-            {/* Skills Grid */}
-            <div ref={iconsRef} className="grid grid-cols-4 gap-4 pt-6">
-              {skills.map((skill) => (
-                <div
-                  key={skill.name}
-                  className="glass-card p-4 rounded-xl hover:glow-effect transition-all duration-300 hover:scale-110 cursor-pointer group"
-                >
-                  <div className="text-4xl mb-2 group-hover:scale-125 transition-transform">
-                    {skill.icon}
+            {/* Skills Carousel */}
+            <div ref={emblaRef} className="overflow-hidden pt-6">
+              <div className="flex gap-4">
+                {skills.map((skill) => (
+                  <div
+                    key={skill.name}
+                    className="flex-shrink-0 glass-card p-4 rounded-xl hover:glow-effect transition-all duration-300 hover:scale-110 cursor-pointer group"
+                    style={{ width: "120px" }} // Fixed width for each item
+                  >
+                    <div className="text-4xl mb-2 group-hover:scale-125 transition-transform">
+                      {skill.icon}
+                    </div>
+                    <p className="text-xs text-center text-muted-foreground">
+                      {skill.name}
+                    </p>
                   </div>
-                  <p className="text-xs text-center text-muted-foreground">
-                    {skill.name}
-                  </p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
