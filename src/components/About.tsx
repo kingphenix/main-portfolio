@@ -75,46 +75,28 @@ const About = () => {
           },
         }
       );
-
-      // Animate carousel entry
-      gsap.fromTo(
-        emblaRef.current,
-        {
-          opacity: 0,
-          y: 30,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          scrollTrigger: {
-            trigger: emblaRef.current,
-            start: "top 80%",
-          },
-        }
-      );
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [emblaRef]);
+  }, []);
 
   return (
     <section
       ref={sectionRef}
       id="about"
-      className="relative py-32 overflow-hidden"
+      className="relative py-16 md:py-32 overflow-hidden"
     >
       {/* Background elements */}
       <div className="absolute inset-0 grid-pattern opacity-20" />
       <div className="absolute top-20 right-20 w-72 h-72 bg-accent/10 rounded-full blur-3xl" />
 
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row items-start gap-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row items-start gap-8 md:gap-12 lg:gap-16">
           {/* Profile Image */}
-          <div ref={imageRef} className="flex-shrink-0">
+          <div ref={imageRef} className="flex-shrink-0 mx-auto md:mx-0">
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity" />
-              <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-primary/30 group-hover:border-primary/60 transition-all group-hover:scale-105 duration-500">
+              <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-primary/30 group-hover:border-primary/60 transition-all group-hover:scale-105 duration-500">
                 <img
                   src={profileImg}
                   alt="Pheenix - Frontend Developer"
@@ -125,32 +107,31 @@ const About = () => {
           </div>
 
           {/* Content */}
-          <div ref={contentRef} className="flex-1 space-y-6 max-w-2xl">
-            <h2 className="text-4xl md:text-5xl font-bold glow-text">
+          <div ref={contentRef} className="flex-1 space-y-4 md:space-y-6 max-w-2xl text-center md:text-left">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold glow-text">
               About Me
             </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed break-words">
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed break-words">
               I'm a passionate frontend developer who transforms ideas into
               stunning digital realities. With a keen eye for design and a deep
               understanding of modern web technologies, I create immersive
               experiences that captivate users and drive results.
             </p>
-            <p className="text-lg text-muted-foreground leading-relaxed break-words">
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed break-words">
               My expertise spans across cutting-edge frameworks and animation
               libraries, allowing me to build interfaces that are not just
               functional, but truly memorable.
             </p>
 
             {/* Skills Carousel */}
-            <div ref={emblaRef} className="overflow-hidden pt-6">
-              <div className="flex gap-4">
+            <div className="overflow-hidden pt-4 md:pt-6">
+              <div className="flex gap-3 md:gap-4">
                 {skills.map((skill) => (
                   <div
                     key={skill.name}
-                    className="flex-shrink-0 glass-card p-4 rounded-xl hover:glow-effect transition-all duration-300 hover:scale-110 cursor-pointer group"
-                    style={{ width: "120px" }} // Fixed width for each item
+                    className="flex-shrink-0 glass-card p-3 md:p-4 rounded-xl hover:glow-effect transition-all duration-300 hover:scale-110 cursor-pointer group min-w-[90px] sm:min-w-[100px] md:min-w-[120px]"
                   >
-                    <div className="text-4xl mb-2 group-hover:scale-125 transition-transform">
+                    <div className="text-2xl md:text-4xl mb-2 group-hover:scale-125 transition-transform">
                       {skill.icon}
                     </div>
                     <p className="text-xs text-center text-muted-foreground">
