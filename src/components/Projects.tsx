@@ -13,10 +13,10 @@ const projects = [
   {
     id: 1,
     title: "Paintball with Policy",
-    description: "An immersive gaming platform with epic sessions and top-tier gear for adventure seekers.",
+    description: "A stunning webshop built for one of the biggest paintball brands in Nigeria",
     image: project1,
-    tech: ["React", "Tailwind", "GSAP"],
-    link: "#",
+    tech: ["React", "Tailwind", "Typescrip"],
+    link: "https://policypaintball.vercel.app",
   },
   {
     id: 2,

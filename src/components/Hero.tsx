@@ -99,7 +99,7 @@ const Hero = () => {
           >
             Hi, I'm <span className="text-primary ds-digital-bold">Pheenix</span>
             <br />
-            <span className="text-accent">Frontend Developer</span>
+            <span className="text-accent font-rajdhani">Frontend Developer</span>
           </h1>
 
           <p
