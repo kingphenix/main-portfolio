@@ -1,77 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
 import { Github, Twitter, Linkedin, Mail } from "lucide-react";
-import { toast } from "sonner";
+import FlickerText from "./ui/FlickerText";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const formRef = useRef<HTMLFormElement>(null);
   const iconsRef = useRef<HTMLDivElement>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        formRef.current?.children || [],
-        {
-          opacity: 0,
-          x: -50,
-          filter: "blur(10px)",
-        },
-        {
-          opacity: 1,
-          x: 0,
-          filter: "blur(0px)",
-          duration: 0.8,
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: formRef.current,
-            start: "top 80%",
-          },
-        }
-      );
-
-      gsap.fromTo(
-        iconsRef.current?.children || [],
-        {
-          opacity: 0,
-          scale: 0,
-        },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.5,
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: iconsRef.current,
-            start: "top 90%",
-          },
-        }
-      );
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast.success("Message sent successfully!");
-      if (formRef.current) {
-        formRef.current.reset();
-      }
-    }, 1500);
-  };
 
   return (
     <section
@@ -83,90 +20,52 @@ const Contact = () => {
       <div className="absolute inset-0 grid-pattern opacity-20" />
       <div className="absolute bottom-20 right-20 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
 
-      <div className="container mx-auto px-4 max-w-2xl">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 glow-text">
-          Let's Connect
+      <div className="container mx-auto px-4 max-w-4xl">
+        <h2 className="text-4xl md:text-5xl font-bold text-center mb-8 ds-digital-bold">
+          <FlickerText text="Let's Connect" className="glow-text" flickerDuration={1000} />
         </h2>
-        <p className="text-center text-muted-foreground mb-12">
-          Have a project in mind? Let's create something amazing together.
-        </p>
 
-        {/* Contact Form */}
-        <form
-          ref={formRef}
-          onSubmit={handleSubmit}
-          className="glass-card p-8 rounded-2xl space-y-6"
-        >
-          <div>
-            <Input
-              placeholder="Your Name"
-              required
-              className="bg-secondary/50 border-border/30 focus:border-primary focus:glow-effect transition-all"
-            />
-          </div>
-
-          <div>
-            <Input
-              type="email"
-              placeholder="Your Email"
-              required
-              className="bg-secondary/50 border-border/30 focus:border-primary focus:glow-effect transition-all"
-            />
-          </div>
-
-          <div>
-            <Textarea
-              placeholder="Your Message"
-              required
-              rows={6}
-              className="bg-secondary/50 border-border/30 focus:border-primary focus:glow-effect transition-all resize-none"
-            />
-          </div>
-
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full bg-gradient-to-r from-primary to-accent hover:shadow-2xl hover:scale-105 transition-all duration-300 glow-effect"
-          >
-            {isSubmitting ? "Sending..." : "Send Message"}
-          </Button>
-        </form>
+        {/* Main message text */}
+        <div className="text-center mb-16">
+          <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-relaxed ds-digital-bold">
+            Got a question, proposal, project, or want to work together on something?
+          </p>
+        </div>
 
         {/* Social Links */}
         <div
           ref={iconsRef}
-          className="flex justify-center gap-6 mt-12"
+          className="flex justify-center gap-8 mt-12"
         >
           <a
-            href="https://github.com"
+            href="https://github.com/kingphenix"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-14 h-14 rounded-full glass-card flex items-center justify-center hover:glow-effect-accent transition-all hover:scale-110"
+            className="w-16 h-16 rounded-full glass-card flex items-center justify-center hover:glow-effect-accent transition-all hover:scale-110"
           >
-            <Github className="w-6 h-6" />
+            <Github className="w-8 h-8" />
           </a>
           <a
-            href="https://twitter.com"
+            href="https://twitter.com/pheenix_x"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-14 h-14 rounded-full glass-card flex items-center justify-center hover:glow-effect-accent transition-all hover:scale-110"
+            className="w-16 h-16 rounded-full glass-card flex items-center justify-center hover:glow-effect-accent transition-all hover:scale-110"
           >
-            <Twitter className="w-6 h-6" />
+            <Twitter className="w-8 h-8" />
           </a>
           <a
-            href="https://linkedin.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-14 h-14 rounded-full glass-card flex items-center justify-center hover:glow-effect-accent transition-all hover:scale-110"
+            href="mailto:josephpheenix10@gmail.com"
+            className="w-16 h-16 rounded-full glass-card flex items-center justify-center hover:glow-effect-accent transition-all hover:scale-110"
           >
-            <Linkedin className="w-6 h-6" />
+            <Mail className="w-8 h-8" />
           </a>
-          <a
-            href="mailto:pheenix@example.com"
-            className="w-14 h-14 rounded-full glass-card flex items-center justify-center hover:glow-effect-accent transition-all hover:scale-110"
-          >
-            <Mail className="w-6 h-6" />
-          </a>
+        </div>
+
+        {/* Call to action text */}
+        <div className="text-center mt-16">
+          <p className="text-lg md:text-xl text-muted-foreground font-medium">
+            Don't hesitate to reach out
+          </p>
         </div>
       </div>
     </section>

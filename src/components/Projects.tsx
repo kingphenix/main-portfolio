@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Button } from "./ui/button";
 import { ExternalLink } from "lucide-react";
+import FlickerText from "./ui/FlickerText";
 import project1 from "@/assets/project-1.png";
 import project2 from "@/assets/project-2.png";
 import project3 from "@/assets/project-3.png";
@@ -24,14 +25,14 @@ const projects = [
     description: "A moden cryptocurrency pice tracker webapp to track the price of crypto currencies in realtime.",
     image: project2,
     tech: ["React", "TypeScript", "ShadCN"],
-    link: "#",
+    link: "#https://github.com/kingphenix/crypto-price-watch",
   },
   {
     id: 3,
-    title: "Cryptocurrency Price Tracker",
-    description: "Transforming ideas into reality with intuitive and engaging user experiences.",
+    title: "Framer Portfolio Site",
+    description: "A portfolio site created using framer ",
     image: project3,
-    tech: ["React", "Tailwind", "Three.js"],
+    tech: ["Framer"],
     link: "#",
   },
   {
@@ -65,26 +66,33 @@ const Projects = () => {
   const cardsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!sectionRef.current) return;
+
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        cardsRef.current?.children || [],
-        {
-          opacity: 0,
-          y: 100,
-          scale: 0.9,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          stagger: 0.15,
-          scrollTrigger: {
-            trigger: cardsRef.current,
-            start: "top 80%",
-          },
+      // Optimized: Batch animation for all project cards
+      const projectCards = gsap.utils.toArray('.glass-card');
+
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top 80%",
+        onEnter: () => {
+          gsap.fromTo(projectCards,
+            {
+              opacity: 0,
+              y: 40,
+              scale: 0.9
+            },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.6,
+              stagger: 0.15,
+              ease: "power2.out"
+            }
+          );
         }
-      );
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -101,8 +109,8 @@ const Projects = () => {
       <div className="absolute top-40 left-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
 
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 glow-text">
-          Featured Projects
+        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">
+          <FlickerText text="Featured Projects" className="glow-text" flickerDuration={1000} />
         </h2>
 
         {/* Projects Grid */}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { gsap } from "gsap";
+import FlickerText from './ui/FlickerText';
 
 const Preloader = ({ onComplete }: { onComplete: () => void }) => {
   const [progress, setProgress] = useState(0);
@@ -55,7 +56,7 @@ const Preloader = ({ onComplete }: { onComplete: () => void }) => {
           Pheenix
         </h1>
         <h2 className="text-2xl md:text-3xl text-primary ds-digital-bold">
-          Welcome
+          <FlickerText text="Welcome" className="text-primary" flickerDuration={1000} />
         </h2>
       </div>
 
@@ -63,7 +64,7 @@ const Preloader = ({ onComplete }: { onComplete: () => void }) => {
       <div className="progress-bar relative z-10 w-64 md:w-96">
         <div className="h-1 bg-secondary rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-300 ease-out glow-effect"
+            className="h-full bg-primary transition-all duration-300 ease-out glow-effect"
             style={{ width: `${Math.min(progress, 100)}%` }}
           />
         </div>
