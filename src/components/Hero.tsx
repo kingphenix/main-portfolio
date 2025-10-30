@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
 import Swirl from "./swirl";
 import FlickerText from "./ui/FlickerText";
+import BirdsBackground from "./BirdsBackground";
 
 const Greeting = () => {
   const greetings = ["Hello", "Hola", "Bonjour", "Ciao", "こんにちは", "안녕하세요", "Привет"];
@@ -107,20 +108,11 @@ const Hero = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16"
     >
-      {/* Spline 3D Background */}
-      <div className="absolute inset-0 z-0">
-        <iframe
-          src="https://my.spline.design/vaporwavebackground-n4PxA5tFik5tmoDrZ7zqWZTA/"
-          frameBorder="0"
-          width="100%"
-          height="100%"
-          className="w-full h-full"
-          title="3D Background"
-        />
-      </div>
-
+      {/* Birds Background */}
+      <BirdsBackground />
+      
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-background/80 z-10" />
+      <div className="absolute inset-0 bg-background/50 z-10" />
 
       {/* Content */}
       <div className="relative z-20 container mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center h-full">
