@@ -35,30 +35,6 @@ const projects = [
     tech: ["Framer"],
     link: "#",
   },
-  {
-    id: 4,
-    title: "E-Commerce Platform",
-    description: "Modern shopping experience with seamless checkout and product discovery.",
-    image: project1,
-    tech: ["Next.js", "Stripe", "Supabase"],
-    link: "#",
-  },
-  {
-    id: 5,
-    title: "SaaS Dashboard",
-    description: "Analytics and management dashboard with real-time data visualization.",
-    image: project2,
-    tech: ["React", "D3.js", "Node.js"],
-    link: "#",
-  },
-  {
-    id: 6,
-    title: "Creative Agency",
-    description: "Award-winning agency website with stunning animations and storytelling.",
-    image: project3,
-    tech: ["GSAP", "React", "WebGL"],
-    link: "#",
-  },
 ];
 
 const Projects = () => {
