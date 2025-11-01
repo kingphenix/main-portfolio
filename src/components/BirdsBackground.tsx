@@ -1,13 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
+declare global {
+  interface Window {
+    VANTA: {
+      BIRDS: (options: any) => {
+        destroy: () => void;
+      };
+    };
+  }
+}
+
 // This is a workaround to load the vanta.birds.min.js script
 const loadVanta = () => {
   return new Promise((resolve) => {
     if (typeof window === 'undefined') return resolve(null);
     
-    // @ts-ignore - We'll handle the case where window.VANTA might not exist
-    if (window.VANTA) return resolve(window.VANTA);
+    if ((window as any).VANTA) return resolve((window as any).VANTA);
     
     const script = document.createElement('script');
     script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js';
@@ -17,8 +26,7 @@ const loadVanta = () => {
       vantaScript.src = 'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js';
       vantaScript.async = true;
       vantaScript.onload = () => {
-        // @ts-ignore
-        resolve(window.VANTA);
+        resolve((window as any).VANTA);
       };
       document.body.appendChild(vantaScript);
     };
@@ -27,12 +35,12 @@ const loadVanta = () => {
 };
 
 const BirdsBackground = () => {
-  const [vantaEffect, setVantaEffect] = useState(null);
-  const vantaRef = useRef(null);
+  const [vantaEffect, setVantaEffect] = useState<{ destroy: () => void } | null>(null);
+  const vantaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!vantaEffect && typeof window !== 'undefined') {
-      loadVanta().then((VANTA) => {
+      loadVanta().then((VANTA: typeof window.VANTA) => {
         if (!VANTA || !vantaRef.current) return;
         
         const effect = VANTA.BIRDS({
@@ -46,8 +54,8 @@ const BirdsBackground = () => {
           scaleMobile: 1.00,
           backgroundColor: 0x70808,
           color1: 0x00ffff,
-          birdSize: 1.70,
-          wingSpan: 17.00,
+          birdSize: 1.02,
+          wingSpan: 10.20,
           speedLimit: 4.00,
           separation: 58.00,
           alignment: 76.00,
@@ -60,8 +68,8 @@ const BirdsBackground = () => {
     
     return () => {
       if (vantaEffect) {
-        // @ts-ignore
         vantaEffect.destroy();
+        setVantaEffect(null);
       }
     };
   }, [vantaEffect]);
