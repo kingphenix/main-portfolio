@@ -14,7 +14,7 @@ const projects = [
   {
     id: 1,
     title: "Paintball with Policy",
-    description: "A stunning webshop built for one of the biggest paintball brands in Nigeria",
+    description: "A stunning webshop built for one of the biggest paintball brands in Nigeria. Designed for paintball enthusiasts, offering a seamless online experience for players, teams, and event organizers.",
     image: project1,
     tech: ["React", "Tailwind", "Typescrip"],
     link: "https://policypaintball.vercel.app",
@@ -22,7 +22,7 @@ const projects = [
   {
     id: 2,
     title: "Crypto Price Track",
-    description: "A moden cryptocurrency pice tracker webapp to track the price of crypto currencies in realtime.",
+    description: "A real-time cryptocurrency monitoring webapp to help users track market trends, prices, and portfolio performance. Built with modern web technologies, this app provides a seamless and intuitive user experience.",
     image: project2,
     tech: ["React", "TypeScript", "ShadCN"],
     link: "#https://github.com/kingphenix/crypto-price-watch",
