@@ -30,9 +30,9 @@ const projects = [
   {
     id: 3,
     title: "Framer Portfolio Site",
-    description: "A portfolio site created using framer ",
+    description: "A sleek and modern portfolio site designed to showcase my skills and projects. Built with Framer, this site features a clean and intuitive interface, smooth animations, and seamless interactions.",
     image: project3,
-    tech: ["Framer"],
+    tech: ["Framer", "HTML", "CSS"],
     link: "#",
   },
 ];
