@@ -40,35 +40,39 @@ const projects = [
 const Projects = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useRef(false);
 
   useEffect(() => {
-    if (!sectionRef.current) return;
+    // Check for reduced motion preference
+    prefersReducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (!sectionRef.current || prefersReducedMotion.current) return;
 
     const ctx = gsap.context(() => {
-      // Optimized: Batch animation for all project cards
-      const projectCards = gsap.utils.toArray('.glass-card');
+      const projectCards = gsap.utils.toArray<HTMLElement>('.glass-card');
+      
+      // Only animate if not already visible
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            gsap.fromTo(entry.target,
+              { opacity: 0, y: 20 },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                ease: "power2.out",
+                clearProps: "transform"
+              }
+            );
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
 
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top 80%",
-        onEnter: () => {
-          gsap.fromTo(projectCards,
-            {
-              opacity: 0,
-              y: 40,
-              scale: 0.9
-            },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.6,
-              stagger: 0.15,
-              ease: "power2.out"
-            }
-          );
-        }
-      });
+      projectCards.forEach(card => observer.observe(card));
+
+      return () => observer.disconnect();
     }, sectionRef);
 
     return () => ctx.revert();
@@ -78,50 +82,64 @@ const Projects = () => {
     <section
       ref={sectionRef}
       id="projects"
-      className="relative py-32 overflow-hidden"
+      className="relative py-16 md:py-24 lg:py-32 overflow-hidden"
     >
       {/* Background */}
-      <div className="absolute inset-0 grid-pattern opacity-20" />
-      <div className="absolute top-40 left-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+      <div className="absolute inset-0 grid-pattern opacity-10 md:opacity-20" />
+      <div className="absolute top-20 right-0 left-0 mx-auto w-64 h-64 md:w-96 md:h-96 bg-primary/10 rounded-full blur-3xl" />
 
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">
-          <FlickerText text="Featured Projects" className="glow-text" flickerDuration={1000} />
+      <div className="container mx-auto px-4 sm:px-6">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-12 md:mb-16 lg:mb-20">
+          <FlickerText 
+            text="Featured Projects" 
+            className="glow-text text-3xl sm:text-4xl lg:text-5xl" 
+            flickerDuration={1000} 
+          />
         </h2>
 
         {/* Projects Grid */}
         <div
           ref={cardsRef}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
         >
           {projects.map((project) => (
-            <div
+            <article
               key={project.id}
-              className="glass-card rounded-2xl overflow-hidden group hover:glow-effect transition-all duration-500 hover:-translate-y-2"
+              className="glass-card rounded-2xl overflow-hidden group hover:glow-effect transition-all duration-300 hover:-translate-y-1 active:translate-y-0"
+              aria-labelledby={`project-${project.id}-title`}
             >
               {/* Project Image */}
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative aspect-video overflow-hidden">
                 <img
                   src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  alt=""
+                  width={600}
+                  height={400}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-60" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent opacity-70" />
               </div>
 
               {/* Content */}
-              <div className="p-6 space-y-4">
-                <h3 className="text-2xl font-bold text-foreground">
+              <div className="p-5 sm:p-6 space-y-4">
+                <h3 
+                  id={`project-${project.id}-title`}
+                  className="text-xl sm:text-2xl font-bold text-foreground line-clamp-2"
+                >
                   {project.title}
                 </h3>
-                <p className="text-muted-foreground">{project.description}</p>
+                <p className="text-sm sm:text-base text-muted-foreground line-clamp-3">
+                  {project.description}
+                </p>
 
                 {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 pt-1">
                   {project.tech.map((tech) => (
                     <span
                       key={tech}
-                      className="px-3 py-1 text-xs rounded-full bg-primary/20 text-primary border border-primary/30"
+                      className="px-2.5 py-1 text-[10px] sm:text-xs rounded-full bg-primary/10 text-primary border border-primary/20"
                     >
                       {tech}
                     </span>
@@ -131,16 +149,22 @@ const Projects = () => {
                 {/* CTA */}
                 <Button
                   variant="outline"
-                  className="w-full group/btn border-primary/30 hover:border-primary hover:bg-primary/10"
+                  size="sm"
+                  className="w-full mt-4 group/btn border-primary/20 hover:border-primary hover:bg-primary/10 h-10 sm:h-9 text-sm"
                   asChild
                 >
-                  <a href={project.link} target="_blank" rel="noopener noreferrer">
+                  <a 
+                    href={project.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center"
+                  >
                     View Project
-                    <ExternalLink className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                    <ExternalLink className="ml-2 h-3.5 w-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
                   </a>
                 </Button>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </div>
